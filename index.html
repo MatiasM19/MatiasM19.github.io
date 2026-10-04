@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mi portafolio</title>
+<meta name="description" content="Portafolio personal: perfil, intereses, proyectos y habilidades.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6f4;--card:#fff;--ink:#14213d;--muted:#52607a;--accent:#0e7c7b;--mark:#ffd166;--line:#d5dcd8}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1720;--card:#16212d;--ink:#e8eef5;--muted:#9fb0c3;--accent:#4fd1c5;--mark:#8a6d1d;--line:#26364a}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;font-size:17px}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:56px}
+aside{position:sticky;top:40px;align-self:start}
+aside img{width:160px;height:160px;border-radius:50%;object-fit:cover;border:4px solid var(--mark);background:var(--line)}
+aside h1{font-size:2rem;line-height:1.1;margin:20px 0 6px;font-weight:800}
+aside .rol{color:var(--muted);margin:0 0 20px}
+aside nav a{display:block;padding:4px 0;color:var(--ink);text-decoration:none;font-weight:600}
+aside nav a:hover{color:var(--accent)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.links a{border:1.5px solid var(--ink);color:var(--ink);padding:4px 12px;border-radius:99px;text-decoration:none;font-size:.9rem;font-weight:600}
+.links a:hover{background:var(--ink);color:var(--bg)}
+section{margin-bottom:56px;scroll-margin-top:24px}
+h2{font-size:1.8rem;margin:0 0 16px;font-weight:800;display:inline;background:linear-gradient(transparent 62%,var(--mark) 62%)}
+h2+*{margin-top:20px}
+.intro{font-size:1.25rem;max-width:62ch}
+.tags{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}
+.tags li{background:var(--card);border:1px solid var(--line);padding:4px 14px;border-radius:99px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+.card h3{margin:0 0 6px;font-size:1.1rem}
+.card p{margin:0 0 10px;color:var(--muted);font-size:.95rem}
+.card .meta{font-size:.85rem;color:var(--muted)}
+.bar{margin-bottom:14px}
+.bar div:first-child{display:flex;justify-content:space-between;font-weight:600}
+.bar .track{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:4px}
+.bar .fill{height:100%;background:var(--accent);border-radius:99px}
+.tl{border-left:3px solid var(--line);padding-left:20px;margin:0}
+.tl article{margin-bottom:18px;position:relative}
+.tl article::before{content:"";position:absolute;left:-28px;top:8px;width:11px;height:11px;border-radius:50%;background:var(--accent)}
+.tl h3{margin:0;font-size:1.05rem}.tl p{margin:0;color:var(--muted)}
+footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:820px){.wrap{grid-template-columns:1fr;gap:32px}aside{position:static}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside>
+    <img id="foto" alt="Foto de perfil">
+    <h1 id="nombre"></h1>
+    <p class="rol" id="rol"></p>
+    <nav aria-label="Secciones">
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#intereses">Intereses</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#github">GitHub</a>
+      <a href="#habilidades">Habilidades</a>
+      <a href="#trayectoria">Trayectoria</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="links" id="enlaces"></div>
+  </aside>
+
+  <main>
+    <section id="sobre-mi"><h2>Sobre mí</h2><p class="intro" id="bio"></p></section>
+    <section id="intereses"><h2>Intereses</h2><ul class="tags" id="intereses-lista"></ul></section>
+    <section id="proyectos"><h2>Proyectos</h2><div class="grid" id="proyectos-lista"></div></section>
+    <section id="github"><h2>Repositorios en GitHub</h2>
+      <p id="gh-estado" style="color:var(--muted)">Cargando desde GitHub…</p>
+      <div class="grid" id="gh-lista"></div></section>
+    <section id="habilidades"><h2>Habilidades</h2><div id="habilidades-lista"></div></section>
+    <section id="trayectoria"><h2>Trayectoria</h2><div class="tl" id="trayectoria-lista"></div></section>
+    <section id="contacto"><h2>Contacto</h2><p id="contacto-texto"></p></section>
+    <footer id="pie"></footer>
+  </main>
+</div>
+
+<script>
+/* =====================================================================
+   ✏️ EDITA AQUÍ: TODA TU INFORMACIÓN ESTÁ EN ESTE BLOQUE
+   Cambia solo el texto entre comillas. No borres comas ni llaves.
+   ===================================================================== */
+const PERFIL = {
+  // --- Datos principales ---
+  usuarioGithub: "tu-usuario",              // ✏️ Tu usuario de GitHub (de aquí salen tu foto y tus repos)
+  nombre: "Tu Nombre Apellido",             // ✏️
+  rol: "Estudiante de Ingeniería en ...",   // ✏️ Ej: Estudiante de Ingeniería · Escuela Politécnica Nacional
+  bio: "Escribe aquí 2 o 3 frases sobre ti: qué estudias, qué te apasiona y qué buscas.", // ✏️
+
+  // --- Enlaces (borra los que no uses) ---
+  enlaces: [
+    { texto: "GitHub",   url: "https://github.com/tu-usuario" },        // ✏️
+    { texto: "LinkedIn", url: "https://www.linkedin.com/in/tu-perfil" }, // ✏️
+    { texto: "Correo",   url: "mailto:tucorreo@ejemplo.com" }           // ✏️
+  ],
+
+  // --- Intereses ---
+  intereses: ["Inteligencia artificial", "Robótica", "Videojuegos", "Lectura"], // ✏️
+
+  // --- Proyectos destacados (puedes agregar o quitar bloques) ---
+  proyectos: [
+    { titulo: "Nombre del proyecto 1", descripcion: "Qué hace y qué problema resuelve.", tecnologias: "Python · Pandas", url: "https://github.com/tu-usuario/proyecto1" }, // ✏️
+    { titulo: "Nombre del proyecto 2", descripcion: "Describe tu aporte y el resultado.", tecnologias: "HTML · CSS · JavaScript", url: "" } // ✏️ url vacía = sin enlace
+  ],
+
+  // --- Habilidades: nivel de 0 a 100 ---
+  habilidades: [
+    { nombre: "Python", nivel: 80 },       // ✏️
+    { nombre: "Git y GitHub", nivel: 70 }, // ✏️
+    { nombre: "SQL", nivel: 60 }           // ✏️
+  ],
+
+  // --- Otros: educación, cursos, experiencia, logros ---
+  trayectoria: [
+    { titulo: "Tu carrera o curso", lugar: "Tu institución", periodo: "2023 – actualidad" }, // ✏️
+    { titulo: "Certificación o logro", lugar: "Quién lo otorgó", periodo: "2025" }           // ✏️
+  ],
+
+  contacto: "¿Quieres colaborar o conversar? Escríbeme a tucorreo@ejemplo.com.", // ✏️
+  maxReposGithub: 6   // ✏️ Cuántos repositorios mostrar automáticamente
+};
+/* ======================= FIN DE LA PARTE EDITABLE ======================= */
+
+const $ = id => document.getElementById(id);
+const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.textContent = html; return e; };
+
+document.title = PERFIL.nombre;
+$("nombre").textContent = PERFIL.nombre;
+$("rol").textContent = PERFIL.rol;
+$("bio").textContent = PERFIL.bio;
+$("foto").src = `https://github.com/${PERFIL.usuarioGithub}.png?size=320`;
+$("contacto-texto").textContent = PERFIL.contacto;
+$("pie").textContent = `© ${new Date().getFullYear()} ${PERFIL.nombre}`;
+
+PERFIL.enlaces.forEach(l => { const a = el("a", "", l.texto); a.href = l.url; a.target = "_blank"; a.rel = "noopener"; $("enlaces").append(a); });
+PERFIL.intereses.forEach(i => $("intereses-lista").append(el("li", "", i)));
+
+PERFIL.proyectos.forEach(p => {
+  const c = el("div", "card");
+  c.append(el("h3", "", p.titulo), el("p", "", p.descripcion), el("div", "meta", p.tecnologias));
+  if (p.url) { const a = el("a", "", "Ver proyecto"); a.href = p.url; a.target = "_blank"; a.rel = "noopener"; c.append(a); }
+  $("proyectos-lista").append(c);
+});
+
+PERFIL.habilidades.forEach(h => {
+  const b = el("div", "bar");
+  const top = el("div"); top.append(el("span", "", h.nombre), el("span", "", h.nivel + "%"));
+  const tr = el("div", "track"); const f = el("div", "fill"); f.style.width = h.nivel + "%"; tr.append(f);
+  b.append(top, tr); $("habilidades-lista").append(b);
+});
+
+PERFIL.trayectoria.forEach(t => {
+  const a = el("article"); a.append(el("h3", "", t.titulo), el("p", "", `${t.lugar} · ${t.periodo}`));
+  $("trayectoria-lista").append(a);
+});
+
+/* Repositorios reales y actualizados, leídos directamente de GitHub */
+fetch(`https://api.github.com/users/${PERFIL.usuarioGithub}/repos?sort=updated&per_page=30`)
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(repos => {
+    const lista = repos.filter(r => !r.fork).slice(0, PERFIL.maxReposGithub);
+    if (!lista.length) { $("gh-estado").textContent = "Aún no hay repositorios públicos para mostrar."; return; }
+    $("gh-estado").remove();
+    lista.forEach(r => {
+      const c = el("div", "card");
+      const h = el("h3"); const a = el("a", "", r.name); a.href = r.html_url; a.target = "_blank"; a.rel = "noopener"; h.append(a);
+      c.append(h, el("p", "", r.description || "Sin descripción."),
+        el("div", "meta", `${r.language || "—"} · ★ ${r.stargazers_count} · Actualizado ${new Date(r.pushed_at).toLocaleDateString("es-EC")}`));
+      $("gh-lista").append(c);
+    });
+  })
+  .catch(() => { $("gh-estado").textContent = "No se pudieron cargar los repositorios. Revisa que 'usuarioGithub' esté bien escrito."; });
+</script>
+</body>
+</html>
